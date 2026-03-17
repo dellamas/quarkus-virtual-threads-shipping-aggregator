@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.api;
+package br.com.luisf.fabricio.demos.shippingaggregator.api;
 
 import java.util.Arrays;
 
@@ -19,9 +19,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
-import br.com.luisf.fabricio.labs.shippingaggregator.model.PartnerCode;
-import br.com.luisf.fabricio.labs.shippingaggregator.service.ShippingDiagnosticsService;
-import br.com.luisf.fabricio.labs.shippingaggregator.service.ShippingQuoteAggregationService;
+import br.com.luisf.fabricio.demos.shippingaggregator.model.PartnerCode;
+import br.com.luisf.fabricio.demos.shippingaggregator.service.ShippingDiagnosticsService;
+import br.com.luisf.fabricio.demos.shippingaggregator.service.ShippingQuoteAggregationService;
 
 @Path("/api/shipping-options")
 @Produces(MediaType.APPLICATION_JSON)

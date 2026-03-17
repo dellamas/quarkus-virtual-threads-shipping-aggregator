@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.model;
+package br.com.luisf.fabricio.demos.shippingaggregator.model;
 
 public enum PartnerCode {
     FASTBOX,

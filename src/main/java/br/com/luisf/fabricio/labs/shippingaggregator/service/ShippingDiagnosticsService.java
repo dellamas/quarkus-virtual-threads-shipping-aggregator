@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.service;
+package br.com.luisf.fabricio.demos.shippingaggregator.service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import br.com.luisf.fabricio.labs.shippingaggregator.api.PartnerDiagnosticsResponse;
-import br.com.luisf.fabricio.labs.shippingaggregator.api.ShippingDiagnosticsResponse;
-import br.com.luisf.fabricio.labs.shippingaggregator.model.PartnerCode;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.PartnerDiagnosticsResponse;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingDiagnosticsResponse;
+import br.com.luisf.fabricio.demos.shippingaggregator.model.PartnerCode;
 
 @ApplicationScoped
 public class ShippingDiagnosticsService {

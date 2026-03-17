@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.service;
+package br.com.luisf.fabricio.demos.shippingaggregator.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -6,8 +6,8 @@ import java.time.Duration;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import br.com.luisf.fabricio.labs.shippingaggregator.api.ShippingQuoteRequest;
-import br.com.luisf.fabricio.labs.shippingaggregator.model.PartnerCode;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingQuoteRequest;
+import br.com.luisf.fabricio.demos.shippingaggregator.model.PartnerCode;
 
 @ApplicationScoped
 public class ShippingPartnerSimulator {

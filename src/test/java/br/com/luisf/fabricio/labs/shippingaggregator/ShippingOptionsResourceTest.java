@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator;
+package br.com.luisf.fabricio.demos.shippingaggregator;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

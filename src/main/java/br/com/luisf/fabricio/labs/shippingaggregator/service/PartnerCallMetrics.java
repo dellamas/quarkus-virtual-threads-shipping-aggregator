@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.service;
+package br.com.luisf.fabricio.demos.shippingaggregator.service;
 
 import java.util.concurrent.atomic.AtomicLong;
 

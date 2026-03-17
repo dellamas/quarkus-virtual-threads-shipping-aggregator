@@ -1,9 +1,9 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.api;
+package br.com.luisf.fabricio.demos.shippingaggregator.api;
 
 import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-@Schema(name = "PartnerCatalogResponse", description = "Supported shipping partners exposed by the lab.")
+@Schema(name = "PartnerCatalogResponse", description = "Supported shipping partners exposed by the application.")
 public record PartnerCatalogResponse(List<String> partners) {
 }

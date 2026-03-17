@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.api;
+package br.com.luisf.fabricio.demos.shippingaggregator.api;
 
 import java.math.BigDecimal;
 

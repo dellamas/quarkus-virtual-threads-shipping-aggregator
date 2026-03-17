@@ -1,6 +1,6 @@
-# quarkus-virtual-threads-shipping-aggregator-lab
+# quarkus-virtual-threads-shipping-aggregator
 
-Lab Quarkus que simula uma API de cotacao de frete para e-commerce agregando tres parceiros com I/O bloqueante em paralelo usando virtual threads.
+Aplicação Quarkus que simula uma API de cotação de frete para e-commerce, agregando três parceiros com I/O bloqueante em paralelo usando virtual threads.
 
 ## Stack
 
@@ -12,11 +12,11 @@ Lab Quarkus que simula uma API de cotacao de frete para e-commerce agregando tre
 - Virtual Threads
 - JUnit 5 e Rest Assured
 
-## Cenario
+## Cenário
 
-O endpoint principal recebe os dados do pedido e consulta `FASTBOX`, `ECONOSHIP` e `PICKNPACK` em paralelo. Cada parceiro simula latencia bloqueante com `Thread.sleep`, enquanto a agregacao usa `Executors.newVirtualThreadPerTaskExecutor()` para manter o codigo simples e escalavel.
+O endpoint principal recebe os dados do pedido e consulta `FASTBOX`, `ECONOSHIP` e `PICKNPACK` em paralelo. Cada parceiro simula latência bloqueante com `Thread.sleep`, enquanto a agregação usa `Executors.newVirtualThreadPerTaskExecutor()` para manter o código simples e escalável.
 
-O retorno final vem ordenado por menor preco, o que facilita a comparacao imediata para um checkout de e-commerce.
+O retorno final vem ordenado por menor preço, o que facilita a comparação imediata em um checkout de e-commerce.
 
 ## Endpoints
 
@@ -26,25 +26,25 @@ O retorno final vem ordenado por menor preco, o que facilita a comparacao imedia
 - `GET /q/swagger-ui`
 - `GET /q/openapi`
 
-## Exemplo de requisicao
+## Exemplo de requisição
 
 ```json
 {
-  "orderId": "order-1001",
-  "destinationZipCode": "04538-132",
-  "weightKg": 3.75,
-  "declaredValue": 899.90,
-  "itemsCount": 4
+  "origin": "sao-paulo-sp",
+  "destination": "belo-horizonte-mg",
+  "sku": "SKU-9001",
+  "quantity": 3,
+  "orderValue": 799.90
 }
 ```
 
-## Diagnosticos
+## Diagnósticos
 
-O endpoint de diagnostico expone:
+O endpoint de diagnóstico expõe:
 
-- total de cotacoes recebidas
+- total de cotações recebidas
 - chamadas realizadas por parceiro
-- tempo medio em milissegundos por parceiro
+- tempo médio em milissegundos por parceiro
 
 ## Executar localmente
 
@@ -58,14 +58,17 @@ Swagger UI: `http://localhost:8080/q/swagger-ui`
 
 Os testes cobrem:
 
-- ordenacao das cotacoes por menor preco
-- catalogo de parceiros
-- diagnosticos agregados por parceiro
+- ordenação das cotações por menor preço
+- catálogo de parceiros
+- diagnósticos agregados por parceiro
 
-## CTA
+## Links
 
-Veja o repositório completo e publique sua variacao deste lab em: https://github.com/dellamas/quarkus-virtual-threads-shipping-aggregator-lab
+Se quiser ver a implementação completa, o repositório está aqui:
+https://github.com/dellamas/quarkus-virtual-threads-shipping-aggregator
 
-Para conversar sobre Quarkus, Java e arquitetura, conecte-se no LinkedIn: https://www.linkedin.com/in/luisfabriciodellamas/
+Para conversar sobre Quarkus, Java e arquitetura:
+https://www.linkedin.com/in/luisfabriciodellamas/
 
-Mais artigos e labs em: https://dev.to/dellamas
+Mais artigos em:
+https://dev.to/dellamas

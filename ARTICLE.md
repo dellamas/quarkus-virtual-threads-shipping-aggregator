@@ -1,48 +1,48 @@
-# Agregacao de cotacoes de frete com Quarkus e virtual threads
+# Agregação de cotações de frete com Quarkus e virtual threads
 
-Em um e-commerce, o checkout quase sempre depende de consultas externas para estimar frete. O problema aparece quando o backend precisa chamar varios parceiros ao mesmo tempo e todos eles expõem APIs lentas, baseadas em I/O bloqueante. Se o desenho da aplicacao nao considerar isso desde o inicio, a latencia cresce rapido e a complexidade do codigo sobe junto.
+Em um e-commerce, o checkout quase sempre depende de consultas externas para estimar frete. O problema aparece quando o backend precisa chamar vários parceiros ao mesmo tempo e todos eles expõem APIs lentas, baseadas em I/O bloqueante. Se o desenho da aplicação não considerar isso desde o início, a latência cresce rápido e a complexidade do código sobe junto.
 
-Este lab mostra uma abordagem objetiva com Quarkus 3.32.3 e Java 21: uma API que recebe um pedido de cotacao, chama `FASTBOX`, `ECONOSHIP` e `PICKNPACK` em paralelo e devolve o resultado consolidado ordenado por menor preco.
+Este projeto mostra uma abordagem objetiva com Quarkus 3.32.3 e Java 21: uma API que recebe um pedido de cotação, chama `FASTBOX`, `ECONOSHIP` e `PICKNPACK` em paralelo e devolve o resultado consolidado ordenado por menor preço.
 
-## O problema pratico
+## O problema prático
 
-Num fluxo de compra, a experiencia esperada e simples: informar CEP, peso e valor do pedido e receber opcoes de entrega em poucos instantes. Nos bastidores, isso costuma significar:
+Num fluxo de compra, a experiência esperada é simples: informar origem, destino, SKU, quantidade e valor do pedido para receber opções de entrega em poucos instantes. Nos bastidores, isso costuma significar:
 
-- tres ou mais integracoes HTTP externas
+- três ou mais integrações HTTP externas
 - tempos de resposta diferentes por parceiro
-- codigo bloqueante em SDKs ou clientes legados
+- código bloqueante em SDKs ou clientes legados
 - necessidade de consolidar e ordenar o resultado final
 
-Com threads tradicionais por requisicao, escalar esse modelo pode custar caro. Com virtual threads, da para manter o estilo imperativo e ainda tratar grande volume de espera por I/O com muito menos atrito.
+Com threads tradicionais por requisição, escalar esse modelo pode custar caro. Com virtual threads, dá para manter o estilo imperativo e ainda tratar grande volume de espera por I/O com muito menos atrito.
 
-## A ideia do lab
+## A ideia da aplicação
 
-O projeto expoe tres endpoints:
+O projeto expõe três endpoints:
 
 - `POST /api/shipping-options/quotes`
 - `GET /api/shipping-options/partners`
 - `GET /api/shipping-options/diagnostics`
 
-O endpoint principal usa um executor de virtual threads para disparar as chamadas dos parceiros em paralelo. Cada cliente simula I/O bloqueante com `Thread.sleep`, justamente para demonstrar um caso comum de integracao que nao nasceu reativo.
+O endpoint principal usa um executor de virtual threads para disparar as chamadas dos parceiros em paralelo. Cada cliente simula I/O bloqueante com `Thread.sleep`, justamente para demonstrar um caso comum de integração que não nasceu reativa.
 
-O diagnostico complementa a demonstracao com tres informacoes uteis:
+O diagnóstico complementa a demonstração com três informações úteis:
 
-- total de cotacoes processadas
+- total de cotações processadas
 - quantidade de chamadas por parceiro
-- tempo medio por parceiro
+- tempo médio por parceiro
 
-Isso ajuda a visualizar o custo de cada integracao e mostra como a agregacao se comporta ao longo do uso.
+Isso ajuda a visualizar o custo de cada integração e mostra como a agregação se comporta ao longo do uso.
 
 ## Por que virtual threads fazem sentido aqui
 
-Nem todo sistema precisa virar reativo para lidar com concorrencia. Quando o problema principal e espera por I/O, virtual threads permitem:
+Nem todo sistema precisa virar reativo para lidar com concorrência. Quando o problema principal é espera por I/O, virtual threads permitem:
 
-- continuar escrevendo codigo direto e legivel
+- continuar escrevendo código direto e legível
 - paralelizar chamadas bloqueantes com baixo overhead
-- reduzir a pressao por pools de threads tradicionais
-- deixar a regra de negocio mais simples de entender e manter
+- reduzir a pressão por pools de threads tradicionais
+- deixar a regra de negócio mais simples de entender e manter
 
-No contexto deste lab, isso significa que a classe de servico pode orquestrar os tres parceiros com poucas linhas, sem callbacks, sem combinadores reativos e sem sacrificar clareza.
+Neste cenário, isso significa que a classe de serviço pode orquestrar os três parceiros com poucas linhas, sem callbacks, sem combinadores reativos e sem sacrificar clareza.
 
 ## Resultado funcional
 
@@ -50,22 +50,27 @@ Para um payload como este:
 
 ```json
 {
-  "orderId": "order-1001",
-  "destinationZipCode": "04538-132",
-  "weightKg": 3.75,
-  "declaredValue": 899.90,
-  "itemsCount": 4
+  "origin": "sao-paulo-sp",
+  "destination": "belo-horizonte-mg",
+  "sku": "SKU-9001",
+  "quantity": 3,
+  "orderValue": 799.90
 }
 ```
 
-A API retorna as cotacoes ordenadas do menor para o maior preco. Esse detalhe importa porque aproxima o lab de um caso real de checkout, onde a comparacao imediata entre parceiros faz parte da experiencia do cliente.
+A API retorna as cotações ordenadas do menor para o maior preço. Esse detalhe importa porque aproxima o projeto de um caso real de checkout, em que a comparação imediata entre parceiros faz parte da experiência do cliente.
+
+Além disso, o endpoint de diagnóstico passa a refletir as chamadas executadas, o que ajuda a validar a agregação e observar o comportamento do fluxo após uma cotação real.
 
 ## Fechamento
 
-Este projeto nao tenta simular um gateway logistico completo. O foco esta em mostrar uma estrutura enxuta, publicavel e facil de explicar para demonstrar paralelismo com I/O bloqueante em Quarkus usando virtual threads.
+Este projeto não tenta simular um gateway logístico completo. O foco está em mostrar uma estrutura enxuta, publicável e fácil de explicar para demonstrar paralelismo com I/O bloqueante em Quarkus usando virtual threads.
 
-Veja o código do lab, adapte para o seu contexto e compartilhe sua versão em: https://github.com/dellamas/quarkus-virtual-threads-shipping-aggregator-lab
+Se quiser explorar a implementação com calma, o código está aqui:
+https://github.com/dellamas/quarkus-virtual-threads-shipping-aggregator
 
-Para acompanhar mais conteúdos sobre Java, Quarkus e arquitetura, conecte-se no LinkedIn: https://www.linkedin.com/in/luisfabriciodellamas/
+Para acompanhar mais conteúdos sobre Java, Quarkus e arquitetura, vale me encontrar no LinkedIn:
+https://www.linkedin.com/in/luisfabriciodellamas/
 
-Mais artigos e experimentos em: https://dev.to/dellamas
+E, se curtir esse tipo de material prático, tem mais publicações em:
+https://dev.to/dellamas

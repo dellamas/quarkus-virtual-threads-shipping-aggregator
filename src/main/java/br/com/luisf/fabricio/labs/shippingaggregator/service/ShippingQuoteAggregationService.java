@@ -1,4 +1,4 @@
-package br.com.luisf.fabricio.labs.shippingaggregator.service;
+package br.com.luisf.fabricio.demos.shippingaggregator.service;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -12,10 +12,10 @@ import java.util.concurrent.Future;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import br.com.luisf.fabricio.labs.shippingaggregator.api.ShippingQuoteOptionResponse;
-import br.com.luisf.fabricio.labs.shippingaggregator.api.ShippingQuoteRequest;
-import br.com.luisf.fabricio.labs.shippingaggregator.api.ShippingQuoteResponse;
-import br.com.luisf.fabricio.labs.shippingaggregator.model.PartnerCode;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingQuoteOptionResponse;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingQuoteRequest;
+import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingQuoteResponse;
+import br.com.luisf.fabricio.demos.shippingaggregator.model.PartnerCode;
 
 @ApplicationScoped
 public class ShippingQuoteAggregationService {
