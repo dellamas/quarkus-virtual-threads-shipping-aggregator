@@ -62,10 +62,6 @@ Os testes cobrem:
 - catálogo de parceiros
 - diagnósticos agregados por parceiro
 
-## Links
-
-Se quiser ver a implementação completa, o repositório está aqui:
-https://github.com/dellamas/quarkus-virtual-threads-shipping-aggregator
 
 Para conversar sobre Quarkus, Java e arquitetura:
 https://www.linkedin.com/in/luisfabriciodellamas/
