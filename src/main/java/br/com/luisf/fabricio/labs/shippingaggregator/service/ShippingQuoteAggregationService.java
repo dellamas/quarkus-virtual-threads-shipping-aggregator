@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -34,8 +35,12 @@ public class ShippingQuoteAggregationService {
                     .toList();
             List<ShippingQuoteOptionResponse> options = executor.invokeAll(tasks).stream()
                     .map(this::awaitQuote)
+                    .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ShippingQuoteOptionResponse::price))
                     .toList();
+            if (options.isEmpty()) {
+                throw new IllegalStateException("Unable to aggregate shipping quotes from available partners");
+            }
             long totalAggregationTimeMs = Duration.ofNanos(System.nanoTime() - startedAt).toMillis();
             return new ShippingQuoteResponse(
                     request.origin() + " -> " + request.destination(),
@@ -63,7 +68,7 @@ public class ShippingQuoteAggregationService {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Virtual thread result interrupted", e);
         } catch (ExecutionException e) {
-            throw new IllegalStateException("Unable to aggregate shipping quotes", e.getCause());
+            return null;
         }
     }
 
