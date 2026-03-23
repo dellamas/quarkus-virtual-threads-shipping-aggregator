@@ -4,11 +4,16 @@ import java.math.BigDecimal;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @Schema(name = "ShippingQuoteRequest", description = "Request payload to aggregate shipping quotes across partner carriers.")
 public record ShippingQuoteRequest(
-        @Schema(example = "sao-paulo-sp") String origin,
-        @Schema(example = "belo-horizonte-mg") String destination,
-        @Schema(example = "SKU-9001") String sku,
-        @Schema(example = "3") int quantity,
-        @Schema(example = "799.90") BigDecimal orderValue) {
+        @NotBlank @Schema(example = "sao-paulo-sp") String origin,
+        @NotBlank @Schema(example = "belo-horizonte-mg") String destination,
+        @NotBlank @Schema(example = "SKU-9001") String sku,
+        @Min(1) @Schema(example = "3") int quantity,
+        @NotNull @DecimalMin(value = "0.01") @Schema(example = "799.90") BigDecimal orderValue) {
 }

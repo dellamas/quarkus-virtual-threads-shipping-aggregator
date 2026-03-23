@@ -71,4 +71,21 @@ class ShippingOptionsResourceTest {
                 .body("partners[1].calls", equalTo(1))
                 .body("partners[2].calls", equalTo(1));
     }
+    @Test
+    @Order(4)
+    void shouldRejectInvalidQuotePayload() {
+        given()
+                .contentType(ContentType.JSON)
+                .body(Map.of(
+                        "origin", "sao-paulo-sp",
+                        "destination", "belo-horizonte-mg",
+                        "sku", "SKU-9001",
+                        "quantity", 0,
+                        "orderValue", BigDecimal.ZERO))
+                .when()
+                .post("/api/shipping-options/quotes")
+                .then()
+                .statusCode(400);
+    }
+
 }

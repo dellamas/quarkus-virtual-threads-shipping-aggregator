@@ -12,6 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -39,7 +40,7 @@ public class ShippingOptionsResource {
     @RunOnVirtualThread
     @Operation(summary = "Aggregate shipping quotes", description = "Collects blocking partner quotes in parallel with virtual threads and returns the cheapest option first.")
     @APIResponse(responseCode = "200", description = "Aggregated shipping quote response", content = @Content(schema = @Schema(implementation = ShippingQuoteResponse.class), examples = @ExampleObject(name = "quote", value = "{\"route\":\"sao-paulo-sp -> belo-horizonte-mg\",\"sku\":\"SKU-9001\",\"quantity\":3,\"orderValue\":799.90,\"options\":[{\"partner\":\"ECONOSHIP\",\"price\":40.25,\"estimatedDays\":4,\"serviceLevel\":\"ECONOMY\",\"latencyMs\":256}],\"totalAggregationTimeMs\":280}")))
-    public ShippingQuoteResponse quote(ShippingQuoteRequest request) {
+    public ShippingQuoteResponse quote(@Valid ShippingQuoteRequest request) {
         return shippingQuoteAggregationService.aggregate(request);
     }
 
