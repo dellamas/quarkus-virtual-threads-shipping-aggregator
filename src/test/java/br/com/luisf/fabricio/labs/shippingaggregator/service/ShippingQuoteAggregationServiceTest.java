@@ -1,6 +1,7 @@
 package br.com.luisf.fabricio.demos.shippingaggregator.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import br.com.luisf.fabricio.demos.shippingaggregator.api.ShippingQuoteRequest;
 import br.com.luisf.fabricio.demos.shippingaggregator.model.PartnerCode;
@@ -36,4 +37,22 @@ class ShippingQuoteAggregationServiceTest {
             return super.fetchQuote(partner, request);
         }
     }
+
+    @Test
+    void shouldRejectInvalidQuantityBeforeStartingPartnerCalls() {
+        ShippingQuoteAggregationService service = new ShippingQuoteAggregationService();
+        service.shippingPartnerSimulator = new ShippingPartnerSimulator();
+        service.shippingDiagnosticsService = new ShippingDiagnosticsService();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> service.aggregate(new ShippingQuoteRequest(
+                        "sao-paulo-sp",
+                        "belo-horizonte-mg",
+                        "SKU-9001",
+                        0,
+                        new BigDecimal("799.90"))));
+
+        assertEquals("quantity must be greater than zero", exception.getMessage());
+    }
+
 }

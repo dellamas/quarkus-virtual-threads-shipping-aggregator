@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.math.BigDecimal;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,6 +28,7 @@ public class ShippingQuoteAggregationService {
     ShippingDiagnosticsService shippingDiagnosticsService;
 
     public ShippingQuoteResponse aggregate(ShippingQuoteRequest request) {
+        validateRequest(request);
         long startedAt = System.nanoTime();
         shippingDiagnosticsService.registerQuote();
         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
@@ -69,6 +71,30 @@ public class ShippingQuoteAggregationService {
             throw new IllegalStateException("Virtual thread result interrupted", e);
         } catch (ExecutionException e) {
             return null;
+        }
+    }
+
+    private void validateRequest(ShippingQuoteRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("request must not be null");
+        }
+        if (request.origin() == null || request.origin().strip().isEmpty()) {
+            throw new IllegalArgumentException("origin must not be blank");
+        }
+        if (request.destination() == null || request.destination().strip().isEmpty()) {
+            throw new IllegalArgumentException("destination must not be blank");
+        }
+        if (request.sku() == null || request.sku().strip().isEmpty()) {
+            throw new IllegalArgumentException("sku must not be blank");
+        }
+        if (request.quantity() < 1) {
+            throw new IllegalArgumentException("quantity must be greater than zero");
+        }
+        if (request.orderValue() == null) {
+            throw new IllegalArgumentException("orderValue must not be null");
+        }
+        if (request.orderValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("orderValue must be greater than zero");
         }
     }
 
